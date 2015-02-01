@@ -10,12 +10,11 @@ import ru.datastructure.ycache.contract.CacheType;
 
 public class CacheFactoryDefault implements CacheFactory {
 
-    private Map<CacheType, Class<? extends Cache<?, ?>>> caches = new EnumMap<CacheType, Class<? extends Cache<?, ?>>>(CacheType.class);
+    private Map<CacheType, Class<?>> caches = new EnumMap<>(CacheType.class);
 
-    @SuppressWarnings("unchecked")
     private CacheFactoryDefault() {
-        caches.put(CacheType.LRU, (Class<? extends Cache<?, ?>>) YcacheLru.class);
-        caches.put(CacheType.FIFO, (Class<? extends Cache<?, ?>>) YcacheFifo.class);
+        caches.put(CacheType.LRU, YcacheLru.class);
+        caches.put(CacheType.FIFO, YcacheFifo.class);
     }
 
     public <K, V> Cache<K, V> createCache(CacheType fifo) {
