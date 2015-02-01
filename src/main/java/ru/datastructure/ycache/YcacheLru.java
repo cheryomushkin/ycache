@@ -2,9 +2,6 @@ package ru.datastructure.ycache;
 
 public class YcacheLru<K, V> extends AbstractYcache<K, V> {
 
-    public YcacheLru() {
-        super();
-    }
     public YcacheLru(Integer capacity) {
         super(capacity);
     }

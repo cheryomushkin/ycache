@@ -17,23 +17,27 @@ public class CacheFactoryDefault implements CacheFactory {
         caches.put(CacheType.FIFO, YcacheFifo.class);
     }
 
-    public <K, V> Cache<K, V> createCache(CacheType fifo) {
-        return createCache(fifo, 0);
+    /**
+     * {@inheritDoc}
+     */
+    public <K, V> Cache<K, V> createCache(CacheType cacheType) {
+        return createCache(cacheType, 100);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
-    public <K, V> Cache<K, V> createCache(CacheType fifo, int capacity) {
+    public <K, V> Cache<K, V> createCache(CacheType cacheType, int capacity) {
+        if (capacity < 0) {
+            throw new IllegalArgumentException("Capacity must be more or equals to 0!");
+        }
         Cache<K, V> cache = null;
-        if (caches.containsKey(fifo)) {
-            Class<? extends Cache<K, V>> targetClass = (Class<? extends Cache<K, V>>) caches.get(fifo);
+        if (caches.containsKey(cacheType)) {
+            Class<? extends Cache<K, V>> targetClass = (Class<? extends Cache<K, V>>) caches.get(cacheType);
             try {
-                if (capacity > 0) {
-                    Constructor<? extends Cache<K, V>> constructor = targetClass.getConstructor(Integer.class);
-                    cache = constructor.newInstance(capacity);
-                } else {
-                    cache = targetClass.newInstance();
-                }
-
+                Constructor<? extends Cache<K, V>> constructor = targetClass.getConstructor(Integer.class);
+                cache = constructor.newInstance(capacity);
             } catch (RuntimeException | ReflectiveOperationException e) {
                 e.printStackTrace();
             }

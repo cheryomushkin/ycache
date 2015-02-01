@@ -2,9 +2,6 @@ package ru.datastructure.ycache;
 
 public class YcacheFifo<K, V> extends AbstractYcache<K, V> {
 
-    public YcacheFifo() {
-        super();
-    }
     public YcacheFifo(Integer capacity) {
         super(capacity);
     }

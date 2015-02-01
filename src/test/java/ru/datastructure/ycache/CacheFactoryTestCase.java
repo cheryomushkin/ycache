@@ -30,4 +30,15 @@ public class CacheFactoryTestCase {
         assertTrue(cacheFifo instanceof YcacheLru);
     }
 
+    @Test
+    public void testCreateUnknown() {
+        Cache<String, String> cacheUnknown = getCacheFactory().createCache(null, 10);
+        assertNull(cacheUnknown);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateIllegalCapacity() {
+        getCacheFactory().createCache(null, -1);
+    }
+
 }

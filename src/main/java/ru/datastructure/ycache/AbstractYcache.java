@@ -5,15 +5,28 @@ import java.util.Map;
 
 import ru.datastructure.ycache.contract.Cache;
 
+/**
+ * This class provides base cache functionality and allows derived classes
+ * to implement different cache invalidation strategies
+ *
+ * This class always removes the last element from internal linked list when cache reaches the max capacity.
+ * Derived classes must ensure that the last element in the linked list is the one which should be deleted.
+ *
+ * @param <K> Cache key type
+ * @param <V> Cache value type
+ */
 public abstract class AbstractYcache<K, V> implements Cache<K, V> {
     private Integer capacity;
+    /**
+     * Using map for quick access to underlying data
+     */
     private Map<K, Node<K, V>> searchMap = new HashMap<>();
+    /**
+     * Using doubly linked list to allow sub classes implement their own cache invalidation strategies
+     */
     private Node<K, V> head;
     private Node<K, V> tail;
 
-    public AbstractYcache() {
-        this(100);
-    }
     public AbstractYcache(Integer capacity) {
         this.capacity = capacity;
     }
@@ -45,6 +58,9 @@ public abstract class AbstractYcache<K, V> implements Cache<K, V> {
 
     @Override
     public void put(K key, V value) {
+        if (capacity <= 0) {
+            return;
+        }
         if (searchMap.containsKey(key)) {
             Node<K, V> node = searchMap.get(key);
             node.value = value;
@@ -81,6 +97,11 @@ public abstract class AbstractYcache<K, V> implements Cache<K, V> {
         }
     }
 
+    /**
+     * Updates order of elements in the internal linked list (if necessary)
+     * according to the cache strategy.
+     * @param node
+     */
     protected abstract void updateNodePosition(Node<K, V> node);
 
     private K removeLast() {

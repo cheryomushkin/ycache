@@ -1,5 +1,11 @@
 package ru.datastructure.ycache;
 
+/**
+ * Auxiliary class for creating linked lists
+ *
+ * @param <K> Key type
+ * @param <V> Value type
+ */
 class Node<K, V> {
     K key;
     V value;
