@@ -87,6 +87,9 @@ public abstract class AbstractYcache<K, V> implements Cache<K, V> {
     }
 
     protected void replaceFirstNode(Node<K, V> node) {
+        if (getHead() == node) {
+            return;
+        }
         if (getHead() == null) {
             setHead(node);
             setTail(node);
